@@ -1,0 +1,8 @@
+00abba     зелёный
+e7417a     красный
+ffda2f     желтый
+6d6e71     серый
+88153e     вишнёвый
+f27920     оранжевый
+
+http://ajaxloadingimages.net/svg
