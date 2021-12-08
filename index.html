@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<!--------------------------->
+ <head>
+  <meta charset="UTF-8">
+  <title>OUN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="css\styles.css">
+  <script src="js/Chart.js"></script>
+</head>
+<!--------------------------->
+<body onload="javascript:ChartReload(0);ClassChange('One')">
+<!--------------------------->
+<header>
+
+<hr> 
+<div class="hdiv">
+  <li class="elemOne" id="One" onmouseover="ClassChange('One');" onclick="ChartReload(0)">
+  </li>
+  <li class="elemTwo" id="Two" onmouseover="ClassChange('Two');" onclick="ChartReload(1)">
+  </li>
+  <li class="elemThree" id="Three" onmouseover="ClassChange('Three');" onclick="ChartReload(2)">
+  </li>
+</div>
+</header>
+<hr>
+<!---------------------------
+    <h2 id="h2">КОНВЕРСИЯ</h2>-->
+    <div class="bdiv">
+    <hr>    
+     <canvas class="Chart" id='myChart' height="350";></canvas>
+     <hr>
+    </div> 
+</body>
+<!--------------------------->
+<script>
+
+const DataChart=[
+    [75,86,65,91,45,78,81,66,90,73,81],
+    [55,61,48,87,63,65,92,45,65,44,54],
+    [55,95,77,72,55,58,62,98,87,76,88]
+];
+
+const LabelChart = ["Конверсия,%","Достигших,%","Ready,%"];
+const LabelsChart = ["ГКП1","ГКП2","ГКП3","ГКП4","ГКП5","ГКП6","ГКП7","ГКП8","ГКП9","ГКП10","ГКП11"];
+
+
+function TypeChange(typeNew){
+
+    if (typeNew == 'doughnut'){
+        myChart.config.data.labels = LabelsChart;
+        myChart.config.options.scales.y.display = false;
+        myChart.config.options.scales.x.display = false
+
+    }else {
+        myChart.config.data.labels = LabelsChart;
+        myChart.config.options.scales.y.display = true;
+        myChart.config.options.scales.x.display = true
+    };
+
+console.log(LabelsChart)
+console.log(typeNew)
+myChart.config.data.datasets[0].type = typeNew;
+myChart.update();
+};
+
+function ClassChange(elemNew){
+
+    document.getElementById("One").className = "elemOne";
+    document.getElementById("Two").className = "elemTwo";
+    document.getElementById("Three").className = "elemThree";
+
+    document.getElementById(elemNew).className = "elem" + elemNew + "-new";
+    console.log(elemNew)
+};
+
+function ChartReload(val) {
+
+
+    myChart.config.data.labels = LabelsChart;
+    console.log(val)
+    myChart.config.data.datasets[0].label = LabelChart[val];
+    myChart.config.data.datasets[0].data = DataChart[val];
+    myChart.update();
+    
+};
+    //==================================
+
+      const data = {
+        labels: [],
+        
+        datasets: [{
+        type: 'bar',
+
+        label: ['Звонки,шт'],      
+
+            data: [],
+            backgroundColor: 'rgba(0, 171, 170, 0.2)',
+            borderColor:'rgba(0, 171, 170, 1)',
+            borderWidth: 1,
+            hoverBorderColor: '#ff7880'
+        }]};            
+
+      const config = {
+
+          type: 'bar',
+          data,
+          options: {
+
+          ticks: {
+          min: 30,
+          max: 100,
+          stepSize: 10
+          },
+
+          scales: {
+
+          y: {
+
+          beginAtZero: false,
+          position: 'left', 
+          ticks: {
+          maxTicksLimit: 0,          
+            },        
+            },
+            
+          x: {
+          beginAtZero: false,
+          position: 'bottom', 
+          ticks: {
+          maxTicksLimit: 0 
+            },        
+            }
+
+        }
+      }
+    };
+
+   const  myChart = new Chart (
+
+   document.getElementById('myChart'),
+
+   config
+);
+</script>
+ <footer>
+   <div>
+   <span class = "lp" onclick="TypeChange('bar')">bar</span>
+   <span class = "lp" onclick="TypeChange('line')">line</span>
+   <span class = "lp" onclick="TypeChange('doughnut')">doughnut</span>
+   <span class = "rp">
+    <small><small>
+      22/09/2021
+    </small></small>
+  </span>
+</div>
+ </footer>
+<!--------------------------->
+</html>
