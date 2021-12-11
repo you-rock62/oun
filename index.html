@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<!--------------------------->
+ <head>
+  <meta charset="UTF-8">
+  <title>OUN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="css\styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"></script>
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/snowfall.js"></script>
+
+</head>
+<!--------------------------->
+<body onload="javascript:ChartReload(0);ClassChange('One');TypeChange('radar')">
+<!--------------------------->
+<header>
+  
+<hr> 
+<div class="hdiv">
+  <li class="elemOne" id="One" onmouseover="ClassChange('One');" onclick="ChartReload(0)">
+  </li>
+  <li class="elemTwo" id="Two" onmouseover="ClassChange('Two');" onclick="ChartReload(1)">
+  </li>
+  <li class="elemThree" id="Three" onmouseover="ClassChange('Three');" onclick="ChartReload(2)">
+  </li>
+</div>
+</header>
+<hr>
+<!--------------------------->
+    <h2 id="h2">КОНВЕРСИЯ</h2>
+    <div class="bdiv">    
+     <canvas class="Chart" id='myChart' height="350"></canvas>
+    </div>
+
+<!--------------------------->
+<footer>
+  <hr class="fhr">
+   <div>
+   <span id = "lp" class = "lp">
+   <p class id = "bar" onclick="TypeChange('bar')">Столб</p>
+   <p class id = "line" onclick="TypeChange('line')">Линия</p>
+   <p class id = "doughnut" onclick="TypeChange('doughnut')">Круг</p>
+   </span>
+   <span id = "rp" class = "rp">
+   <p>
+     22/09/2021
+    </p>
+  </span>
+</div>
+ </footer>
+
+ <script type="text/javascript">
+  const DataChart=[
+      [75,86,65,91,45,78,81,66,90,73,81],
+      [55,61,48,87,63,65,92,45,65,44,54],
+      [55,95,77,72,55,58,62,98,87,76,88]
+  ];
+  
+  const LabelChart = ["Конверсия,%","Достигших,%","Ready,%"];
+  const LabelsChart = ["ГКП1","ГКП2","ГКП3","ГКП4","ГКП5","ГКП6","ГКП7","ГКП8","ГКП9","ГКП10","ГКП11"];
+  
+  const backgroundColorChart=[
+  'rgba(0, 171, 170, 0.2)',
+  'rgba(255, 218, 47, 0.2)',
+  'rgba(231, 65, 122, 0.2)'
+  ];
+  
+  const borderColorChart=[
+  'rgba(0, 171, 170, 1)',
+  'rgba(0, 171, 170, 1)',
+  'rgba(231, 65, 122, 1)'
+  ];
+  
+  function TypeChange(typeNew){
+           
+    if (typeNew != 'radar'){
+       document.getElementById('bar').style.color = '#00abba';
+       document.getElementById('line').style.color = '#00abba';
+       document.getElementById('doughnut').style.color = '#00abba';
+       document.getElementById(typeNew).style.color = '#e7417a';
+    };
+       myChart.config.data.datasets[0].type = typeNew;
+  
+      if (typeNew == 'doughnut'){
+          document.getElementById(typeNew).style.color = '#e7417a';
+          myChart.config.data.labels = LabelsChart;
+          myChart.config.options.scales.y.display = false;
+          myChart.config.options.scales.x.display = false;
+          myChart.config.options.scales.r.display = false;
+            if (window.matchMedia('screen and (max-width: 543px)').matches) {
+             myChart.config.data.datasets[0].radius = 160;
+           } else {
+              // ... действия, если устройство не соответствует значениям медиа-запроса
+            }      
+      }
+      else if (typeNew == 'radar'){
+          myChart.config.data.labels = LabelsChart;
+          myChart.config.options.scales.y.display = false;
+          myChart.config.options.scales.x.display = false;
+          myChart.config.options.scales.r.display = true;
+          myChart.config.options.scales.r.ticks.maxTicksLimit= 1;
+  
+      }else {
+          myChart.config.data.labels = LabelsChart;
+          myChart.config.options.scales.y.display = true;
+          myChart.config.options.scales.x.display = true;
+          myChart.config.options.scales.r.display = false;
+      };
+  
+  console.log(LabelsChart)
+  console.log(typeNew)
+  myChart.update();
+  };
+  
+  function ClassChange(elemNew){
+  
+      document.getElementById("One").className = "elemOne";
+      document.getElementById("Two").className = "elemTwo";
+      document.getElementById("Three").className = "elemThree";
+      document.getElementById(elemNew).className = "elem" + elemNew + "-new";
+  };
+  
+  function ChartReload(val) {
+  
+    if (val==0) {
+      document.getElementById('h2').innerHTML = 'КОНВЕРСИЯ';
+    }else if (val==1) {
+      document.getElementById('h2').innerHTML = 'ДОСТИГШИХ';
+    }else if (val==2) {
+      document.getElementById('h2').innerHTML = 'READY';
+    };
+  
+      myChart.config.data.labels = LabelsChart;
+      myChart.config.data.datasets[0].data = DataChart[val];
+      myChart.config.data.datasets[0].label = LabelChart[val];
+      myChart.config.data.datasets[0].borderColor = borderColorChart[val];
+      myChart.config.data.datasets[0].backgroundColor = backgroundColorChart[val];
+      myChart.update();
+      
+  };
+      //==================================
+  
+        const data = {
+          labels: [],
+          
+          datasets: [{
+          type: 'radar',
+          pointStyle:'rectRounded',
+          pointRadius: 20,
+          label: [],      
+          pointHoverRadius: 10,        
+              data: [],
+              backgroundColor: 'rgba(0, 171, 170, 0.2)',
+              borderColor:'rgba(0, 171, 170, 1)',
+              borderWidth: 1,
+              hoverOffset: 10
+          }]};            
+  
+        const config = {
+  
+            type: 'bar',
+            data,
+  
+              options: {
+              indexAxis: 'y',
+              plugins: {
+              legend: {
+                
+                  display: false,
+                  labels: {
+                      color: 'rgb(255, 99, 132)',
+                      fontSize: 40,
+                  }
+              }
+          },
+  
+            ticks: {
+            //min: 30,
+            //max: 100,
+            stepSize: 10
+            },
+            scales: {
+  
+            y: {
+            display: false,
+            beginAtZero: false,
+            position: 'left', 
+            ticks: {
+            maxTicksLimit: 0,        
+            },        
+            },
+              
+            x: {
+            beginAtZero: false,
+            position: 'bottom', 
+            ticks: {
+            maxTicksLimit: 0,     
+            },        
+            }
+  
+          }
+        }
+      };
+  
+     const  myChart = new Chart (
+     document.getElementById('myChart'),
+  
+     config
+  );
+
+   
+        $(document).snowfall({image :"icons/snow1.png", minSize: 15, maxSize:20, minSpeed:1, maxSpeed:1, flakeCount:15});
+        $(document).snowfall({image :"icons/snow2.png", minSize: 15, maxSize:20, minSpeed:1, maxSpeed:2, flakeCount:15});
+        $(document).snowfall({image :"icons/snow3.png", minSize: 15, maxSize:20, minSpeed:1, maxSpeed:3, flakeCount:15});
+        $(document).snowfall({image :"icons/snow4.png", minSize: 15, maxSize:20, minSpeed:1, maxSpeed:1, flakeCount:15});
+        $(document).snowfall({image :"icons/snow5.png", minSize: 15, maxSize:20, minSpeed:1, maxSpeed:2, flakeCount:15});
+   
+  </script>
+  </body>
+<!--------------------------->
+</html>
